@@ -1,11 +1,17 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Shark from "../components/Shark.vue";
+import GamesLibrary from "../components/GamesLibrary.vue";
 
 const routes = [
   {
     path: "/shark",
     name: "Shark",
     component: Shark,
+  },
+  {
+    path: "/games",
+    name: "Games",
+    component: GamesLibrary,
   },
 ];
 
