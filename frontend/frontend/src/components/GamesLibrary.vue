@@ -14,7 +14,9 @@
           <br />
           <!-- Alert Message -->
 
-          <button type="button" class="btn btn-success">Add Game</button>
+          <button type="button" class="btn btn-success" v-b-model.game-modal>
+            Add Game
+          </button>
           <br />
           <br />
           <table class="table table-hover">
@@ -159,12 +161,14 @@ export default {
       const path = "http://localhost:5000/games";
       axios
         .post(path, payload)
-        .then((res) => {
+        .then(() => {
           this.getGames();
-          this.$refs.addGameModal.hide();
+          this.message = "Game added successfully!";
+          this.showMessage = true;
         })
         .catch((err) => {
           console.error(err);
+          this.getGames();
         });
     },
     initForm() {
@@ -173,7 +177,7 @@ export default {
       this.addGameForm.price = "";
       this.addGameForm.played = [];
     },
-    onSubmit(e){
+    onSubmit(e) {
       e.preventDefault();
       this.$refs.addGameModal.hide();
       let played = false;
@@ -181,10 +185,11 @@ export default {
         title: this.addGameForm.title,
         genre: this.addGameForm.genre,
         price: this.addGameForm.price,
-        played: this.addGameForm.played.includes("true"),
-      }
-    }
-    
+        played,
+      };
+      this.addGame(payload);
+      this.initForm();
+    },
   },
   created() {
     this.getGames();
