@@ -1,12 +1,12 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 
 app = Flask(__name__)
 
 app.config.from_object(__name__)
 
-#CORS(app, resources={r"/*": {"origins": "*"}})
-CORS(app, resources={r"/*": {"origins":"http://localhost:8080","allow_headers":"Access-Control-Allow-Origin"}})
+CORS(app, resources={r"/*": {"origins": "*"}})
+#CORS(app, resources={r"/*": {"origins":"http://localhost:8080","allow_headers":"Access-Control-Allow-Origin"}})
 
 # hello world route testing
 
@@ -51,13 +51,24 @@ GAMES = [
     }
 ]
 
-# GET route handler
-@app.route('/games', methods=['GET'])
+# GET & POST route handler
+@app.route('/games', methods=['GET', 'POST'])
 def get_games():
-    return jsonify({
-        'games': GAMES,
-        'status': 'success'
-        })
+    response_object = {'status': 'success'}
+    if request.method == "POST":
+        post_data = request.get_json()
+        GAMES.append({
+            'title': post_data.get('title'),
+            'genre': post_data.get('genre'),
+            'played': post_data.get('played'),
+            'price': post_data.get('price')
+            })
+        response_object['message'] = 'Game added!'
+    else:
+        response_object['games'] = GAMES
+        
+    return jsonify(response_object)
+
 
 
 if __name__ == '__main__':
