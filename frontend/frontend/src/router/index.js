@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Shark from "../components/Shark.vue";
 import GamesLibrary from "../components/GamesLibrary.vue";
+import HomePage from "../components/HomePage.vue";
 
 const routes = [
   {
