@@ -13,8 +13,8 @@
           <hr />
           <br />
           <!-- Alert Message -->
-
-          <button type="button" class="btn btn-success" v-b-model.game-modal>
+          <!-- prettier-ignore -->
+          <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addGameModal">
             Add Game
           </button>
           <br />
@@ -60,77 +60,42 @@
       </div>
       <!-- First Modal -->
       <!-- prettier-ignore -->
-      <b-modal
-        ref="addGameModal"
-        id="game-modal"
-        title="Add New Game"
-        hide-backdrop
-        hide-footer>
-        <b-form @submit="onSubmit" @reset="onReset" class="w-100">
-
-          <b-form-group id="form-title-group"
-          label="Title: "
-          label-for="form-title-input">
-          
-          <b-form-input
-            required
-            id="form-title-input"
-            type="text"
-            v-model="addGameForm.title"
-            placeholder="Enter Game title">
-
-        </b-form-input>
-        </b-form-group>
-
-        <b-form-group id="form-genre-group"
-          label="Genre: "
-          label-for="form-title-input">
-          
-          <b-form-input
-            required
-            id="form-title-input"
-            type="text"
-            v-model="addGameForm.genre"
-            placeholder="Enter Game genre">
-
-          </b-form-input>
-        </b-form-group>
-
-        <b-form-group id="form-price-group"
-          label="Price: "
-          label-for="form-title-input">
-          
-          <b-form-input
-            required
-            id="form-title-input"
-            type="text"
-            v-model="addGameForm.price"
-            placeholder="Enter Game price">
-
-          </b-form-input>
-        </b-form-group>
-<!-- Checkbox form input -->
-        <b-form-group id="form-played-group">
-
-          <b-form-checkbox-group v-model="addGameForm.played">
-            <b-form-checkbox value="true">Played</b-form-checkbox>
-          </b-form-checkbox-group>
-<!-- Submit/Reset Buttons -->
-          <button type="submit" variant="primary">Submit</button>
-          <button type="reset" variant="primary">Reset</button>
-
-        </b-form-group>
-
-
-
-        </b-form>
-      </b-modal>
+      <div class="modal fade" id="addGameModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="addGameModalTitle">Add New Game</h1>
+              <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+              <form @submit="onSubmit">
+                <div class="mb-3">
+                  <!-- <label for="gameTitle" class="form-label">Game Title</label> -->
+                  <input required type="text" id="gameTitle" class="form-control" placeholder="Game Title">
+                </div>
+                <div class="mb-3">
+                  <input required type="text" id="gameGenre" class="form-control" placeholder="Game Genre">
+                </div>
+                <div class="mb-3">
+                  <input required type="number" id="gamePrice" step="00.01" class="form-control" placeholder="Game Price">
+                </div>
+                <div class="mb-3 form-check">
+                  <label for="gamePlayed" class="form-check-label">Played?</label>
+                  <input type="checkbox" id="gamePlayed" class="form-check-label">
+                </div>
+                <button class="btn btn-primary">Add Game</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import axios from "axios";
+
 export default {
   data() {
     return {

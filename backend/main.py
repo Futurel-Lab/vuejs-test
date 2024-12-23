@@ -48,6 +48,12 @@ GAMES = [
         'genre': 'City Builder',
         'played': True,
         'price': 59.99
+    },
+     {
+        'title': 'Nuclear Nightmare',
+        'genre': 'Co-op Horror',
+        'played': False,
+        'price': 2.79
     }
 ]
 
