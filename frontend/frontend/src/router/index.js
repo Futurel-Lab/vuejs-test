@@ -13,6 +13,11 @@ const routes = [
     name: "Games",
     component: GamesLibrary,
   },
+  {
+    path: "/",
+    name: "Home",
+    component: HomePage,
+  },
 ];
 
 const router = createRouter({

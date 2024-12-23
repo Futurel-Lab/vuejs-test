@@ -68,20 +68,20 @@
               <button class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
-              <form @submit="onSubmit">
+              <form @submit="onSubmit" id="addGameForm">
                 <div class="mb-3">
                   <!-- <label for="gameTitle" class="form-label">Game Title</label> -->
-                  <input required type="text" id="gameTitle" class="form-control" placeholder="Game Title">
+                  <input required type="text" id="gameTitle" v-model="addGameForm.title" class="form-control" placeholder="Game Title">
                 </div>
                 <div class="mb-3">
-                  <input required type="text" id="gameGenre" class="form-control" placeholder="Game Genre">
+                  <input required type="text" id="gameGenre" v-model="addGameForm.genre" class="form-control" placeholder="Game Genre">
                 </div>
                 <div class="mb-3">
-                  <input required type="number" id="gamePrice" step="00.01" class="form-control" placeholder="Game Price">
+                  <input required type="number" id="gamePrice" step="00.01" v-model="addGameForm.price" class="form-control" placeholder="Game Price">
                 </div>
                 <div class="mb-3 form-check">
                   <label for="gamePlayed" class="form-check-label">Played?</label>
-                  <input type="checkbox" id="gamePlayed" class="form-check-label">
+                  <input type="checkbox" id="gamePlayed" v-model="addGameForm.played" class="form-check-label">
                 </div>
                 <button class="btn btn-primary">Add Game</button>
               </form>
@@ -94,8 +94,9 @@
 </template>
 
 <script>
+import { Modal } from "bootstrap";
 import axios from "axios";
-
+const modalElement = document.getElementById("addGameModal");
 export default {
   data() {
     return {
@@ -124,16 +125,39 @@ export default {
     //Post function
     addGame(payload) {
       const path = "http://localhost:5000/games";
+
       axios
         .post(path, payload)
         .then(() => {
-          this.getGames();
+          this.getGames(); // Refresh the games list
           this.message = "Game added successfully!";
           this.showMessage = true;
+
+          if (modalElement) {
+            // Check if the modal instance exists, if not, create a new instance
+            let modalInstance = Modal.getInstance(modalElement);
+            if (!modalInstance) {
+              modalInstance = new Modal(modalElement);
+            }
+
+            // Hide the modal
+            modalInstance.hide();
+
+            // Remove any existing modal backdrops after the modal is hidden
+            modalElement.addEventListener(
+              "hidden.bs.modal",
+              () => {
+                // Remove all modal backdrops manually
+                document
+                  .querySelectorAll(".modal-backdrop")
+                  .forEach((backdrop) => backdrop.remove());
+              },
+              { once: true }
+            );
+          }
         })
         .catch((err) => {
           console.error(err);
-          this.getGames();
         });
     },
     initForm() {
@@ -144,8 +168,8 @@ export default {
     },
     onSubmit(e) {
       e.preventDefault();
-      this.$refs.addGameModal.hide();
       let played = false;
+      console.log(this.addGameForm);
       const payload = {
         title: this.addGameForm.title,
         genre: this.addGameForm.genre,
