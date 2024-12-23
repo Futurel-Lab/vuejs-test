@@ -9,7 +9,7 @@
       <div class="row">
         <div class="col-sm-12">
           <!-- prettier-ignore -->
-          <h1 style="border-radius: 30px;" class="text-center bg-primary text-white">🎮Gaming Library🎮</h1>
+          <h1 style="border-radius: 30px;" class="text-center bg-info text-white">🎮Gaming Library🎮</h1>
           <hr />
           <br />
           <!-- Alert Message -->
@@ -94,94 +94,9 @@
 </template>
 
 <script>
-import { Modal } from "bootstrap";
-import axios from "axios";
-const modalElement = document.getElementById("addGameModal");
+import gamesScript from "./js/GamesLibrary.js";
+
 export default {
-  data() {
-    return {
-      games: [],
-      addGameForm: {
-        title: "",
-        genre: "",
-        price: "",
-        played: [],
-      },
-    };
-  },
-  methods: {
-    //Get function
-    getGames() {
-      const path = "http://localhost:5000/games";
-      axios
-        .get(path)
-        .then((res) => {
-          this.games = res.data.games;
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    },
-    //Post function
-    addGame(payload) {
-      const path = "http://localhost:5000/games";
-
-      axios
-        .post(path, payload)
-        .then(() => {
-          this.getGames(); // Refresh the games list
-          this.message = "Game added successfully!";
-          this.showMessage = true;
-
-          if (modalElement) {
-            // Check if the modal instance exists, if not, create a new instance
-            let modalInstance = Modal.getInstance(modalElement);
-            if (!modalInstance) {
-              modalInstance = new Modal(modalElement);
-            }
-
-            // Hide the modal
-            modalInstance.hide();
-
-            // Remove any existing modal backdrops after the modal is hidden
-            modalElement.addEventListener(
-              "hidden.bs.modal",
-              () => {
-                // Remove all modal backdrops manually
-                document
-                  .querySelectorAll(".modal-backdrop")
-                  .forEach((backdrop) => backdrop.remove());
-              },
-              { once: true }
-            );
-          }
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    },
-    initForm() {
-      this.addGameForm.title = "";
-      this.addGameForm.genre = "";
-      this.addGameForm.price = "";
-      this.addGameForm.played = [];
-    },
-    onSubmit(e) {
-      e.preventDefault();
-      let played = false;
-      console.log(this.addGameForm);
-      const payload = {
-        title: this.addGameForm.title,
-        genre: this.addGameForm.genre,
-        price: this.addGameForm.price,
-        played,
-      };
-      this.addGame(payload);
-      this.initForm();
-    },
-  },
-  created() {
-    this.getGames();
-  },
+  ...gamesScript,
 };
 </script>
