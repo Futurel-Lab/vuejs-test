@@ -1,10 +1,12 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
+import logging
+logging.basicConfig(level=logging.DEBUG)
 
 app = Flask(__name__)
 app.config.from_object(__name__)
 
-CORS(app, resources={r"/*": {"origins": "*"}})
+CORS(app, resources={r"/*": {"origins": "*","allow_headers":"*"}})
 #CORS(app, resources={r"/*": {"origins":"http://localhost:8080","allow_headers":"Access-Control-Allow-Origin"}})
 
 # hello world route testing
@@ -57,7 +59,7 @@ GAMES = [
 ]
 
 # GET & POST route handler
-@app.route('/games', methods=['GET', 'POST'])
+@app.route('/games', methods=['GET', 'POST', 'OPTIONS'])
 def get_games():
     response_object = {'status': 'success'}
     if request.method == "POST":
@@ -75,4 +77,4 @@ def get_games():
     return jsonify(response_object)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host="0.0.0.0",debug=True)

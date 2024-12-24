@@ -16,7 +16,7 @@ export default {
   methods: {
     //Get function
     getGames() {
-      const path = "http://localhost:5000/games";
+      const path = "http://10.0.0.144:5000/games";
       axios
         .get(path)
         .then((res) => {
@@ -28,7 +28,7 @@ export default {
     },
     //Post function
     addGame(payload) {
-      const path = "http://localhost:5000/games";
+      const path = "http://10.0.0.144:5000/games";
 
       axios
         .post(path, payload)
